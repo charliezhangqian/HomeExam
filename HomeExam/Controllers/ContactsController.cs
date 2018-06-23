@@ -4,7 +4,6 @@ using HomeExam.Controllers.Response;
 using HomeExam.Core;
 using HomeExam.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HomeExam.Controllers
@@ -39,10 +38,10 @@ namespace HomeExam.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ContactResponse>> GetContacts()
+        public async Task<QueryResult<ContactResponse>> GetContacts([FromQuery] QueryObject query)
         {
-            var contacts = await _contactRepository.List();
-            return _mapper.Map<IEnumerable<Contact>, IEnumerable<ContactResponse>>(contacts);
+            var result = await _contactRepository.Filter(query);
+            return _mapper.Map<QueryResult<Contact>, QueryResult<ContactResponse>>(result);
         }
 
         [HttpGet("{id}")]

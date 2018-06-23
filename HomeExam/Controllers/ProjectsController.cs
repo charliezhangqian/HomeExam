@@ -4,7 +4,6 @@ using HomeExam.Controllers.Response;
 using HomeExam.Core;
 using HomeExam.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HomeExam.Controllers
@@ -25,10 +24,10 @@ namespace HomeExam.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProjectResponse>> GetProjects()
+        public async Task<QueryResult<ProjectResponse>> GetProjects([FromQuery] QueryObject query)
         {
-            var projects = await _projectRepository.List();
-            return _mapper.Map<IEnumerable<Project>, IEnumerable<ProjectResponse>>(projects);
+            var result = await _projectRepository.Filter(query);
+            return _mapper.Map<QueryResult<Project>, QueryResult<ProjectResponse>>(result);
         }
 
         [HttpPost]

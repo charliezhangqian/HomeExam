@@ -1,12 +1,11 @@
 ﻿using HomeExam.Core.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HomeExam.Core
 {
     public interface IContactRepository
     {
-        Task<IEnumerable<Contact>> List();
+        Task<QueryResult<Contact>> Filter(QueryObject queryObj);
         void Add(Contact contact);
         Task<Contact> Get(int id);
         void Remove(Contact contact);

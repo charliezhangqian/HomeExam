@@ -1,7 +1,11 @@
 ﻿using HomeExam.Core;
 using HomeExam.Core.Models;
+using HomeExam.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HomeExam.Persistence
@@ -15,9 +19,34 @@ namespace HomeExam.Persistence
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Project>> List()
+        public async Task<QueryResult<Project>> Filter(QueryObject queryObj)
         {
-            return await _dbContext.Projects.ToListAsync();
+            var queryResult = new QueryResult<Project>();
+
+            var query = _dbContext.Projects.
+                Include(p => p.Contacts).
+                ThenInclude(pc => pc.Contact).
+                AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryObj.Query))
+            {
+                query = query.Where(p => p.Name.Contains(queryObj.Query));
+            }
+
+            var columnsMap = new Dictionary<string, Expression<Func<Project, object>>>
+            {
+                ["name"] = p => p.Name,
+                ["startDate"] = p => p.StartDate,
+                ["endDate"] = p => p.EndDate
+            };
+
+            query = query.ApplyOrdering(queryObj, columnsMap);
+
+            queryResult.TotalCount = await query.CountAsync();
+            query = query.ApplyPaging(queryObj);
+            queryResult.Items = await query.ToListAsync();
+
+            return queryResult;
         }
 
         public void Add(Project project)
