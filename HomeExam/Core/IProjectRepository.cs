@@ -8,5 +8,7 @@ namespace HomeExam.Core
     {
         Task<IEnumerable<Project>> List();
         void Add(Project project);
+        Task<Project> Get(int id);
+        void Remove(Project project);
     }
 }

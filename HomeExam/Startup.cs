@@ -26,6 +26,7 @@ namespace HomeExam
         {
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
 

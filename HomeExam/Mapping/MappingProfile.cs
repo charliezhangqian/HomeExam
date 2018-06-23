@@ -16,6 +16,7 @@ namespace HomeExam.Mapping
                 .ForMember(pr => pr.Contacts, opt => opt.MapFrom(p => p.Contacts.Select(c => c.Contact)));
 
             // Api model to Domain
+            CreateMap<ContactRequest, Contact>();
             CreateMap<ProjectRequest, Project>()
                 .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.Contacts, opt => opt.Ignore())
