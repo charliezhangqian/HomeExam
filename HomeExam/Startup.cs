@@ -1,5 +1,6 @@
 using AutoMapper;
 using HomeExam.Core;
+using HomeExam.Mapping;
 using HomeExam.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,8 @@ namespace HomeExam
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper();
+            services.AddSingleton<IMapper>(
+                new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>())));
 
             services.AddDbContext<ExamDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

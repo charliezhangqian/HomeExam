@@ -1,0 +1,69 @@
+<h1>{{ project.id > 0 ? project.name : "New Project" }}</h1>
+<p>{{project | json}}</p>
+<form #f="ngForm" (ngSubmit)="submit()" novalidate>
+  <h3>Basic info</h3>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" type="text" class="form-control" [(ngModel)]="project.name" name="name" required #name="ngModel">
+    <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please specify the project name.</div>
+  </div>
+  <div class="form-group">
+    <label for="startDate">Start Date</label>
+    <input id="startDate" type="date" class="form-control" name="startDate" required [(ngModel)]="project.startDate" #startDate="ngModel" max="{{ project.endDate }}" />
+    <div class="alert alert-danger" *ngIf="startDate.touched && !startDate.valid">Please specify the start date.</div>
+  </div>
+  <div class="form-group">
+    <label for="endDate">End Date</label>
+    <input id="endDate" type="date" class="form-control" name="endDate" required [(ngModel)]="project.endDate" #endDate="ngModel" min="{{ project.startDate }}" />
+    <div class="alert alert-danger" *ngIf="endDate.touched && !endDate.valid">Please specify the end date.</div>
+  </div>
+  <h3>Contacts</h3>
+
+  <button type="button" class="btn btn-default btn-sm" (click)="openModal(addTemplate)">Add</button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of contacts">
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.phone }}</td>
+        <td>{{ c.email }}</td>
+        <td>
+          <button class="btn btn-xs" (click)="deleteContact(c)"><span class="glyphicon glyphicon-remove"></span></button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+  <button class="btn btn-danger" *ngIf="project.id > 0" type="button" (click)="delete(deleteTemplate)">Delete</button>
+</form>
+
+<ng-template #deleteTemplate>
+  <div class="modal-body text-center">
+    <p>Are you sure to delete {{ project.name }}?</p>
+    <button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-danger" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is a modal.
+  </div>
+</ng-template>

@@ -1,0 +1,47 @@
+<h2>Projects</h2>
+<p>
+  <a class="btn btn-primary" [routerLink]="['/projects/new']">New Vehicle</a>
+</p>
+<!--<div class="well">
+  <div class="form-group">
+    <label for="make">make</label>
+    <select id="make" class="form-control" (change)="onFilterChange()" [(ngModel)]="query.makeId">
+      <option value=""></option>
+      <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.name }}</option>
+    </select>
+  </div>
+  <button class="btn btn-default" (click)="resetFilter()">Reset</button>
+</div>-->
+
+<table class="table">
+  <thead>
+  <tr>
+    <th *ngFor="let c of columns">
+      <div *ngIf="c.isSortable" (click)="sortBy(c.key)">
+        {{ c.title }}
+        <i class="glyphicon"
+           *ngIf="query.sortBy===c.key"
+           [class.glyphicon-chevron-up]="query.isSortAscending"
+           [class.glyphicon-chevron-down]="!query.isSortAscending"
+        ></i>
+      </div>
+      <div *ngIf="!c.isSortable">
+        {{ c.title }}
+      </div>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let i of queryResult.items">
+    <td>{{ i.id }}</td>
+    <td>{{ i.name }}</td>
+    <td>{{ i.startDate | date }}</td>
+    <td>{{ i.endDate | date }}</td>
+    <td>{{ i.contacts.length }}
+<td>
+      <a [routerLink]="['/projects/', i.id]">View</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

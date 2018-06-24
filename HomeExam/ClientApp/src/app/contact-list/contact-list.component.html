@@ -1,0 +1,36 @@
+<h2>Contacts</h2>
+<p>
+  <a class="btn btn-primary" [routerLink]="['/contacts/new']">New Contact</a>
+</p>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th *ngFor="let c of columns">
+      <div *ngIf="c.isSortable" (click)="sortBy(c.key)">
+        {{ c.title }}
+        <i class="glyphicon"
+           *ngIf="query.sortBy===c.key"
+           [class.glyphicon-chevron-up]="query.isSortAscending"
+           [class.glyphicon-chevron-down]="!query.isSortAscending"
+        ></i>
+      </div>
+      <div *ngIf="!c.isSortable">
+        {{ c.title }}
+      </div>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let i of queryResult.items">
+    <td>{{ i.id }}</td>
+    <td>{{ i.name }}</td>
+    <td>{{ i.phone }}</td>
+    <td>{{ i.email }}</td>
+    <td>
+      <a [routerLink]="['/contacts/', i.id]">View</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

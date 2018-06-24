@@ -37,7 +37,8 @@ namespace HomeExam.Persistence
             {
                 ["name"] = p => p.Name,
                 ["startDate"] = p => p.StartDate,
-                ["endDate"] = p => p.EndDate
+                ["endDate"] = p => p.EndDate,
+                ["contacts"] = p => p.Contacts.Count
             };
 
             query = query.ApplyOrdering(queryObj, columnsMap);
