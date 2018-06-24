@@ -44,24 +44,24 @@ export class PaginationComponent implements OnChanges {
       this.pages.push(i);
   }
 
-  //changePage(page: number) {
-  //  this.currentPage = page;
-  //  this.pageChanged.emit(page);
-  //}
+  changePage(page: number) {
+    this.currentPage = page;
+    this.pageChanged.emit(page);
+  }
 
-  //previous() {
-  //  if (this.currentPage == 1)
-  //    return;
+  previous() {
+    if (this.currentPage == 1)
+      return;
 
-  //  this.currentPage--;
-  //  this.pageChanged.emit(this.currentPage);
-  //}
+    this.currentPage--;
+    this.pageChanged.emit(this.currentPage);
+  }
 
-  //next() {
-  //  if (this.currentPage == this.pages.length)
-  //    return;
+  next() {
+    if (this.currentPage == this.pages.length)
+      return;
 
-  //  this.currentPage++;
-  //  this.pageChanged.emit(this.currentPage);
-  //}
+    this.currentPage++;
+    this.pageChanged.emit(this.currentPage);
+  }
 }

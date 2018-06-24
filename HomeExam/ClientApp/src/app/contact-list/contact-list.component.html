@@ -1,5 +1,5 @@
-<h2>Contacts</h2>
-<p>
+<h2 *ngIf="mode=='list'">Contacts</h2>
+<p *ngIf="mode=='list'">
   <a class="btn btn-primary" [routerLink]="['/contacts/new']">New Contact</a>
 </p>
 
@@ -28,9 +28,11 @@
     <td>{{ i.phone }}</td>
     <td>{{ i.email }}</td>
     <td>
-      <a [routerLink]="['/contacts/', i.id]">View</a>
+      <a *ngIf="mode=='list'" [routerLink]="['/contacts/', i.id]">View</a>
+      <input *ngIf="mode!='list'" type="checkbox" value="{{ i }}" [checked]="selectedIds.indexOf(i.id) != -1" (click)="toggleSelection(i)"/>
     </td>
   </tr>
   </tbody>
 </table>
-<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>
+<pagination [total-items]="queryResult.totalCount" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>
+<button *ngIf="mode!='list'" class="btn btn-primary" (click)="onConfirm()">Confirm</button>

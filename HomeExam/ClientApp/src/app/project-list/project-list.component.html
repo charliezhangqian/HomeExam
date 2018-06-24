@@ -1,17 +1,7 @@
 <h2>Projects</h2>
 <p>
-  <a class="btn btn-primary" [routerLink]="['/projects/new']">New Vehicle</a>
+  <a class="btn btn-primary" [routerLink]="['/projects/new']">New Project</a>
 </p>
-<!--<div class="well">
-  <div class="form-group">
-    <label for="make">make</label>
-    <select id="make" class="form-control" (change)="onFilterChange()" [(ngModel)]="query.makeId">
-      <option value=""></option>
-      <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.name }}</option>
-    </select>
-  </div>
-  <button class="btn btn-default" (click)="resetFilter()">Reset</button>
-</div>-->
 
 <table class="table">
   <thead>
@@ -44,4 +34,4 @@
   </tr>
   </tbody>
 </table>
-<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>
+<pagination [total-items]="queryResult.totalCount" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

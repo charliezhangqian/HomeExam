@@ -20,3 +20,8 @@ export interface Contact {
   phone: string;
   email: string;
 }
+
+export interface QueryResult {
+  totalCount: number;
+  items: any[];
+}

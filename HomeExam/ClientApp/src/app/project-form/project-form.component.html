@@ -1,5 +1,4 @@
 <h1>{{ project.id > 0 ? project.name : "New Project" }}</h1>
-<p>{{project | json}}</p>
 <form #f="ngForm" (ngSubmit)="submit()" novalidate>
   <h3>Basic info</h3>
   <div class="form-group">
@@ -58,12 +57,12 @@
 
 <ng-template #addTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Modal</h4>
+    <h4 class="modal-title pull-left">Add Contacts</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    This is a modal.
+  <div class="modal-body" (onHide)="resetSelection()">
+    <app-contact-list [mode]="'addToProject'" [selected-contacts]="selectedContacts" (confirm)="onConfirmSelection($event)"></app-contact-list>
   </div>
 </ng-template>

@@ -1,5 +1,4 @@
 <h1>{{ contact.id > 0 ? contact.name : "New contact" }}</h1>
-<p>{{contact | json}}</p>
 <form #f="ngForm" (ngSubmit)="submit()" novalidate>
   <h3>Basic info</h3>
   <div class="form-group">

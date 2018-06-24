@@ -31,17 +31,20 @@ export class ProjectFormComponent implements OnInit {
     name: '',
     startDate: '',
     endDate: '',
-    contacts: [],
+    contacts: []
   };
 
   contacts: Contact[] = [];
+
+  selectedContacts: Contact[] = [];
 
   ngOnInit() {
     if (this.project.id) {
       this.projectService.getProject(this.project.id).subscribe(
         (p: Project) => {
           this.setProject(p);
-          this.contacts = p.contacts;
+          this.contacts = p.contacts.sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0);
+          this.resetSelection();
         },
         error => {
           if (error.status == 404)
@@ -73,6 +76,10 @@ export class ProjectFormComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+
+    this.modalService.onHide.subscribe(
+      () => this.resetSelection()
+    );
   }
 
   delete(template: TemplateRef<any>) {
@@ -88,6 +95,17 @@ export class ProjectFormComponent implements OnInit {
   }
 
   decline(): void {
+    this.modalRef.hide();
+  }
+
+  resetSelection() {
+    this.selectedContacts = [...this.contacts];
+  }
+
+  onConfirmSelection(selectedContacts: Contact[]) {
+    this.contacts = selectedContacts;
+    this.contacts.sort((a, b) =>  a.id > b.id ? 1 : a.id < b.id ? -1 : 0);
+    this.project.contacts = selectedContacts.map(c => c.id);
     this.modalRef.hide();
   }
 }

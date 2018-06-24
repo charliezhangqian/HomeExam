@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../services/contact.service';
+import { Contact, QueryResult } from '../model/model';
 
 
 @Component({
@@ -8,14 +9,20 @@ import { ContactService } from '../services/contact.service';
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
+  @Input() mode = 'list';
+  @Input('selected-contacts') selected: Contact[] = [];
+  @Output('confirm') confirm = new EventEmitter();
 
   constructor(
     private contactService: ContactService
   ) { }
   private readonly PAGE_SIZE = 5;
 
-  queryResult = {};
-
+  queryResult: QueryResult = {
+    totalCount: 0,
+    items: []
+  };
+  selectedIds = [];
   query: any = {
     pageSize: this.PAGE_SIZE
   };
@@ -29,12 +36,13 @@ export class ContactListComponent implements OnInit {
 
   ngOnInit() {
     this.populateContacts();
+    this.selectedIds = this.selected.map(c => c.id);
   }
 
   private populateContacts() {
     this.contactService.getContacts(this.query)
       .subscribe(
-        result => {
+        (result: QueryResult)=> {
           this.queryResult = result;
         }
       );
@@ -58,5 +66,22 @@ export class ContactListComponent implements OnInit {
   onPageChange(page: number) {
     this.query.page = page;
     this.populateContacts();
+  }
+
+  toggleSelection(c: Contact) {
+    const ind = this.selected.indexOf(c);
+
+    if (ind !== -1) {
+      this.selected.splice(ind);
+      this.selectedIds.splice(ind);
+    } else {
+      this.selected.push(c);
+      this.selectedIds.push(c.id);
+    }
+  }
+
+  onConfirm() {
+    const selectedContacts = this.selected;
+    this.confirm.emit(selectedContacts);
   }
 }
