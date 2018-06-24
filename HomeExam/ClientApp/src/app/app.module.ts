@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { ToastyModule } from 'ng2-toasty';
 import { DatePipe } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -41,7 +40,6 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
       { path: 'contacts/new', component: ContactFormComponent },
       { path: 'contacts/:id', component: ContactFormComponent }
     ]),
-    ToastyModule.forRoot(),
     ModalModule.forRoot()
   ],
   providers: [
