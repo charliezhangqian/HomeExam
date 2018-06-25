@@ -20,6 +20,7 @@ namespace HomeExam
                 {
                     var context = services.GetRequiredService<ExamDbContext>();
                     context.Database.EnsureCreated();
+                    SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {
